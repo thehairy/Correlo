@@ -2,7 +2,7 @@ import { ImapFlow } from 'imapflow';
 import { NextApiRequest } from 'next';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: NextApiRequest): Promise<unknown> {
+export async function GET(req: NextApiRequest): Promise<NextResponse> {
   const url = new URL(req.url ?? '');
   const email = url.searchParams.get('email');
   const token = url.searchParams.get('token');

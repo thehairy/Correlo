@@ -10,21 +10,18 @@ interface Email {
 }
 
 export default function EmailList({ session }: { session: Session | null }) {
-  const [emails, setEmails] = useState<Email[]>([/*
-    { envelope: { messageId: 1, subject: 'Hello there!', sender: [{ address: 'chewie@kashyyyk.com' }] } },
-    { envelope: { messageId: 2, subject: 'Are you still there?', sender: [{ address: 'chewie@kashyyyk.com' }] } },
-    { envelope: { messageId: 3, subject: 'Pay up!', sender: [{ address: 'chewie@kashyyyk.com' }] } },
-    { envelope: { messageId: 4, subject: 'Greetings!', sender: [{ address: 'chewie@kashyyyk.com' }] } },*/
-  ]);
+  const [emails, setEmails] = useState<Email[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
 
+  console.log(emails)
+
   useEffect(() => {
-    if (session /*&& false*/) {
+    if (session) {
       fetch(`/api/imap?email=${session.user?.email}&token=${session.accessToken}`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-          setEmails(data.messages);
+          setEmails(data.messages ?? []);
         })
         .catch((err) => console.error(err));
     }
@@ -38,7 +35,7 @@ export default function EmailList({ session }: { session: Session | null }) {
     <div className="flex h-full bg-gray-200">
       <div className="w-1/5 h-full bg-gray-200 border-r-2 border-gray-300">
         <ul className="overflow-y-auto h-full">
-          {emails.map((email: Email) => (
+          {emails.map((email) => (
             <li
               key={email.envelope.messageId}
               className="p-4 cursor-pointer hover:bg-gray-300"

@@ -3,8 +3,8 @@
 ### 1. Clone the repository and install dependencies
 
 ```
-git clone https://github.com/thehairy/MailClient.git
-cd MailClient
+git clone https://github.com/thehairy/Correlo.git
+cd Correlo
 pnpm install
 ```
 

@@ -2,22 +2,21 @@
 
 import { useEffect, useState } from "react";
 import { Session } from "next-auth";
+import { MessageEnvelopeObject } from "imapflow";
 
 interface Email {
-  id: string;
-  subject: string;
-  sender: string;
-  body: string;
+  date: string;
+  envelope: MessageEnvelopeObject;
 }
 
 export default function EmailList({ session }: { session: Session | null }) {
-  const [emails, setEmails] = useState([/*
+  const [emails, setEmails] = useState<Email[]>([/*
     { envelope: { messageId: 1, subject: 'Hello there!', sender: [{ address: 'chewie@kashyyyk.com' }] } },
     { envelope: { messageId: 2, subject: 'Are you still there?', sender: [{ address: 'chewie@kashyyyk.com' }] } },
     { envelope: { messageId: 3, subject: 'Pay up!', sender: [{ address: 'chewie@kashyyyk.com' }] } },
     { envelope: { messageId: 4, subject: 'Greetings!', sender: [{ address: 'chewie@kashyyyk.com' }] } },*/
   ]);
-  const [selectedEmail, setSelectedEmail] = useState<any>(null);
+  const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
 
   useEffect(() => {
     if (session /*&& false*/) {
@@ -31,7 +30,7 @@ export default function EmailList({ session }: { session: Session | null }) {
     }
   }, [session]);
 
-  const handleEmailClick = (email: any) => {
+  const handleEmailClick = (email: Email) => {
     setSelectedEmail(email);
   };
 
@@ -39,7 +38,7 @@ export default function EmailList({ session }: { session: Session | null }) {
     <div className="flex h-full bg-gray-200">
       <div className="w-1/5 h-full bg-gray-200 border-r-2 border-gray-300">
         <ul className="overflow-y-auto h-full">
-          {emails.map((email: any) => (
+          {emails.map((email: Email) => (
             <li
               key={email.envelope.messageId}
               className="p-4 cursor-pointer hover:bg-gray-300"

@@ -18,8 +18,12 @@ export async function GET(req: NextApiRequest): Promise<any> {
     auth: {
       user: email as string,
       accessToken: token as string,
-    }
+    },
+    emitLogs: false,
+    logRaw: false,
+    logger: false
   });
+
   try {
     let messages = [];
     await client.connect();
@@ -29,7 +33,7 @@ export async function GET(req: NextApiRequest): Promise<any> {
     let message = await client.fetchOne(client.mailbox.exists, { source: true });
     // list subjects for all messages
     // uid value is always included in FETCH response, envelope strings are in unicode.
-    for await (let message of client.fetch('1:1', { envelope: true })) {
+    for await (let message of client.fetch('1:*', { envelope: true })) {
         messages.push({ date: message.internalDate, envelope: message.envelope });
     }
     lock.release();

@@ -5,17 +5,17 @@ import { Inter } from "next/font/google"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "NextAuth.js Example",
-  description:
-    "This is an example site to demonstrate how to use NextAuth.js for authentication",
+  title: "MailClient",
+  description: "This is a Mail Client in development",
 }
 
 export default function RootLayout({ children }: React.PropsWithChildren) {
+  // h-dvh is mobile only, hides the browser ui upon scrolling
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex flex-col justify-between w-full h-full min-h-screen">
-          <main className="flex-auto w-full max-w-5xl px-4 py-4 mx-auto sm:px-6 md:py-6">
+        <div className="flex flex-col justify-between w-full h-dvh min-h-screen">
+          <main className="flex-auto w-full h-dvh bg-gray-100">
             {children}
           </main>
         </div>

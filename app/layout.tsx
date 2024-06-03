@@ -5,8 +5,8 @@ import { Inter } from "next/font/google"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "MailClient",
-  description: "This is a Mail Client in development",
+  title: "Correlo",
+  description: "Correlo is a web based email client.",
 }
 
 export default function RootLayout({ children }: React.PropsWithChildren) {

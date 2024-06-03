@@ -13,17 +13,16 @@ export default function EmailList({ session }: { session: Session | null }) {
   const [emails, setEmails] = useState<Email[]>([]);
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
 
-  console.log(emails)
-
   useEffect(() => {
     if (session) {
-      fetch(`/api/imap?email=${session.user?.email}&token=${session.accessToken}`)
+      fetch(`/api/imap?provider=${session.provider}&email=${session.user?.email}&token=${session.accessToken}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
           setEmails(data.messages ?? []);
         })
         .catch((err) => console.error(err));
+    } else {
+      setEmails([]);
     }
   }, [session]);
 

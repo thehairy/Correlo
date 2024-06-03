@@ -4,10 +4,6 @@ import { auth } from "auth"
 
 export default async function Index() {
   const session = await auth()
-  const sessionToShow = {
-    user: session?.user,
-    expires: session?.expires,
-  }
 
   return (
     <div className="flex flex-col h-full gap-6">

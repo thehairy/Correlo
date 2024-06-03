@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(req: NextApiRequest): Promise<NextResponse> {
   const url = new URL(req.url ?? '');
+  const provider = url.searchParams.get('provider');
   const email = url.searchParams.get('email');
   const token = url.searchParams.get('token');
 
@@ -12,7 +13,7 @@ export async function GET(req: NextApiRequest): Promise<NextResponse> {
   }
 
   const client = new ImapFlow({
-    host: 'imap.gmail.com',
+    host: provider === 'microsoft-entra-id' ? 'outlook.office365.com' : 'imap.gmail.com',
     port: 993,
     secure: true,
     auth: {
@@ -29,13 +30,14 @@ export async function GET(req: NextApiRequest): Promise<NextResponse> {
     await client.connect();
   
     let lock = await client.getMailboxLock('INBOX');
-    for await (let message of client.fetch('1:*', { envelope: true })) {
-        messages.push({ date: message.internalDate, envelope: message.envelope });
+    for await (let message of client.fetch('*:5', { envelope: true, source: true, bodyStructure: true })) {
+      if (message.envelope.sender[0].address?.includes('soeren.stabenow')) message.envelope.sender[0].address = 'nuh.uh@lol.com';
+      messages.push({ date: message.internalDate, envelope: message.envelope });
     }
     lock.release();
     await client.logout();
 
-    return NextResponse.json({ messages }, { status: 200 });
+    return NextResponse.json({ messages: messages.reverse() }, { status: 200 });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
